@@ -16,7 +16,7 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime createDate;
     @LastModifiedDate
-    private LocalDateTime lastModifiedDate;
+    private LocalDateTime modifyDate;
 }
