@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,25 +19,36 @@ public class PostController {
     @ResponseBody
     public String showWrite() {
         return """
-                <form action="doWrite" target="_blank">
-                  <input type="text" name="title" placeholder="제목" value="안녕">
+                <form action="/posts/doWrite" method="POST">
+                  <input type="text" name="title" placeholder="제목">
                   <br>
-                  <textarea name="content" placeholder="내용">반가워</textarea>
+                  <textarea name="content" placeholder="내용"></textarea>
                   <br>
                   <input type="submit" value="작성">
                 </form>
                 """;
     }
 
-    @GetMapping("/posts/dowrite")
+    @PostMapping("/posts/doWrite")
     @ResponseBody
     @Transactional
-    public String write(@RequestParam(defaultValue = "") String title, @RequestParam(defaultValue = "") String content) {
-        if(title.isBlank()) return "제목을 입력해주세요.";
-        if(content.isBlank()) return "내용을 입력해주세요.";
+    public String write(
+            @RequestParam(defaultValue = "") String title,
+            @RequestParam(defaultValue = "") String content
+    ) {
+        if (title.isBlank() || content.isBlank()) return """
+                <div style="color:red;">제목이나 내용을 입력해주세요.</div>
+                <form action="/posts/doWrite" method="POST">
+                  <input type="text" name="title" placeholder="제목"">
+                  <br>
+                  <textarea name="content" placeholder="내용"></textarea>
+                  <br>
+                  <input type="submit" value="작성">
+                </form>
+                """;
 
         Post post = postService.write(title, content);
 
-        return "%d번 글이 작성되었습니다.".formatted(post.getId());
+        return "%d 번 글이 생성 되었습니다.".formatted(post.getId());
     }
 }
