@@ -1,6 +1,6 @@
-package com.back.member.member.controller;
+package com.back.domain.member.member.controller;
 
-import com.back.member.member.service.MemberService;
+import com.back.domain.member.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
